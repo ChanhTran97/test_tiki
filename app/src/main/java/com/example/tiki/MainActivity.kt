@@ -27,12 +27,10 @@ class MainActivity : AppCompatActivity() {
         val urlJSON = "https://raw.githubusercontent.com/tikivn/android-home-test/v2/keywords.json"
         ReadJSON().execute(urlJSON)
 
-        rvKeyword.layoutManager = LinearLayoutManager(this) as RecyclerView.LayoutManager?
+        rvKeyword.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false) as RecyclerView.LayoutManager?
         keyAdapter = CustomAdapter(arrayKey, this)
 
         rvKeyword.adapter = keyAdapter
-
-
 
     }
 
@@ -65,14 +63,9 @@ class MainActivity : AppCompatActivity() {
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
 
-
-            var ten: String
-            val jsonArr  = JSONArray(result)
-
-            val collectionType = object : TypeToken<Collection<keyword>>() {}.type
-
-            arrayKey = Gson().fromJson(result,collectionType)
-
+            val listType = object : TypeToken<List<String>>() {}.type
+            arrayKey = Gson().fromJson(result,listType)
+            keyAdapter.updateData(arrayKey)
         }
 
     }
